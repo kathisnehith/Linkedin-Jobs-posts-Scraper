@@ -13,7 +13,6 @@ import re
 import os
 import time, json, urllib
 import io
-import httpx
 from pydantic import BaseModel
 from IPython.display import *
 
