@@ -121,17 +121,17 @@ submitted = st.button(" Search Jobs", icon="🔍", use_container_width=True, key
 
 # Handle button click
 if submitted:
-    with st.spinner("Searching..."):
+    st.markdown("---")
+    with st.spinner("Searching...", show_time=True):
         time.sleep(2)
-        st.write(f"Job Titles: {job_titles}")
+        st.write(f"Job Titles: {job_titles},  Locations: {locations}")
         time.sleep(1)
-        st.write(f"Locations: {locations}")
-        time.sleep(1)
-        st.write(f"Experience: {experience_level}, Posted: {date_posted}")
-        st.write(f"Easy Apply: {easy_apply}, Under 10 Applicants: {under_10_applicants}")
+        st.write(f"Experience: {experience_level},   Posted: {date_posted}")
+        st.write(f"Easy Apply: {easy_apply},   Under 10 Applicants: {under_10_applicants}")
         if uploaded_resume_file:
             st.success(f"Using resume: {uploaded_resume_file.name}")
 
+        st.markdown("---")
         # --- Call LinkedIn job search and display results ---
         # Only proceed if all required fields are present
         if job_titles and locations and experience_level and date_posted and uploaded_resume_file and GEMINI_API_KEY:
@@ -140,7 +140,9 @@ if submitted:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_resume:
                 tmp_resume.write(uploaded_resume_file.read())
                 resume_path = tmp_resume.name
-
+            st.info("Hang on!! Job search extraction, filtering, and analysis in progress...")
+            st.warning("This may take 1-2 minutes depending on level of elements selected")
+            st.markdown("---")
             # Call the search function
             df= search_linkedin_jobs(
                 jobtitles_list,
@@ -152,8 +154,7 @@ if submitted:
                 resume_path,
                 match_score_threshold
             )
-            st.info("Hang on!! Job search extraction, filtering, and analysis in progress...")
-            st.warning("This may take 1-2 minutes depending on level of elements selected")
+
             if isinstance(df, pd.DataFrame) and not df.empty:
                 st.success(f" Found {len(df)} jobs matching your criteria.")
                 for idx, row in df.iterrows():
