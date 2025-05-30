@@ -16,7 +16,7 @@ st.subheader("Job Search Feature")
 with st.sidebar:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
     st.markdown("[Get an Gemini API key](https://aistudio.google.com/)", help="Using the link-Navigate over Get API Key, to create a new API key.")
-    st.markdown("[Sample Resume-Download](https://drive.google.com/file/d/1lXAjCY4JrlrwdW1xrTAPBaCSj78fD1bk/view)")
+    st.markdown("[Sample DE_Resume(Download)](https://drive.google.com/file/d/1lXAjCY4JrlrwdW1xrTAPBaCSj78fD1bk/view)", help="Download a sample resume to test the job search feature.")
 
 
 uploaded_resume_file = st.file_uploader(
@@ -39,14 +39,15 @@ col3, col4 = st.columns(2)
 with col1:
     job_titles = st.text_input(
         "Enter job titles separated by commas",
-        placeholder="e.g., Developer, \"Designer\"....",
+        placeholder="e.g., Data Engineer, \"ML Engineer\"....",
         help="Use quotes for precise job titles scrape",
         key="jobtitle_input",
     )
 with col2:
     locations = st.text_input(
         "Enter locations separated by commas",
-        placeholder="e.g., New York, Texas, California",
+        placeholder="e.g., New York, Texas, California, USA",
+        help="use locations of states or countries",
         key="location_input",
     )
 
@@ -55,12 +56,14 @@ with col3:
     experience_level = st.multiselect(
         "Experience level",
         ["Internship","Entry Level", "Mid Level", "Senior Level"],
+        help="Select one or more experience levels",
         key="experience_select"
     )
 with col4:
     date_posted = st.selectbox(
         "Date Posted",
         ["1hr", "2hr", "3hr", "6hr", "Last 24hr","Past Week", "Last 30 days"],
+        help="Select the time frame-focused for todau's job postings",
         index=None,
         key="date_posted_select"
     )
@@ -149,7 +152,8 @@ if submitted:
                 resume_path,
                 match_score_threshold
             )
-
+            st.info("Hang on!! Job search extraction, filtering, and analysis in progress...")
+            st.warning("This may take 1-2 minutes depending on level of elements selected")
             if isinstance(df, pd.DataFrame) and not df.empty:
                 st.success(f" Found {len(df)} jobs matching your criteria.")
                 for idx, row in df.iterrows():
