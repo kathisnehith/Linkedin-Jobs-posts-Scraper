@@ -14,7 +14,7 @@ st.subheader("Job Search Feature")
 
 
 with st.sidebar:
-    GEMINI_API_KEY = st.text_input("GEMINI_API_KEY", type="password")
+    GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
     st.markdown("[Get an Gemini API key](https://aistudio.google.com/)", help="Using the link-Navigate over Get API Key, to create a new API key.")
     st.markdown("[Sample Resume-Download](https://drive.google.com/file/d/1lXAjCY4JrlrwdW1xrTAPBaCSj78fD1bk/view)")
 
